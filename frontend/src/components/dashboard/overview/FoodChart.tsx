@@ -16,10 +16,11 @@ import { Phone as PhoneIcon } from '@phosphor-icons/react/dist/ssr/Phone';
 import type { ApexOptions } from 'apexcharts';
 
 import { Chart } from '@/components/core/chart';
-import { Button } from '@mui/material';
+import { Button, Divider } from '@mui/material';
 import { getPatientFoodData } from '@/services/getPatientFoodData';
 import DatetimeModal from '../DatetimeModal';
 import { BowlFood, Egg, Hamburger, IceCream, Coffee } from '@phosphor-icons/react/dist/ssr';
+import FoodDetailsModal from './FoodDetailsModal';
 
 const iconMapping = { Calories: Hamburger, Protein: Egg, Carbo: BowlFood, Sugar: IceCream } as Record<string, Icon>; //mudar os icones?
 
@@ -30,10 +31,13 @@ export interface TrafficProps {
 }
 
 export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element {
-  const chartOptions = useChartOptions(labels);
+  
   const [selectedDateFood, setSelectedDateFood] = React.useState<string>("");
   const [open, setOpen] = React.useState<boolean>(false);
   const [uniqueDatetimes, setUniqueDatetimes] = React.useState<string[]>([]);
+  const [detailsModalOpen, setDetailsModalOpen] = React.useState<boolean>(false);
+  
+  const chartOptions = useChartOptions(labels, setDetailsModalOpen);
 
   const getUniqueDatetimes = (data: any[]): string[] => {
     const uniqueDatetimes = new Set<string>();
@@ -43,8 +47,8 @@ export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element
         uniqueDatetimes.add(item.time_begin);
       }
     });
-    console.log(data)
-    console.log(uniqueDatetimes);
+    console.log("tudo",data)
+    console.log("uniqueDatetimes:",uniqueDatetimes);
     return Array.from(uniqueDatetimes);
   };
   const handleConfirm = (selectedDate : any) => {
@@ -57,6 +61,7 @@ export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element
   }, [selectedDateFood, data]);
 
   
+
   const totalNutricionalValues = React.useMemo(() => {
     return filteredData.reduce(
       (acc, item) => {
@@ -107,6 +112,9 @@ export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element
       <CardContent>
         <Stack spacing={2}>
           <Chart height={300} options={chartOptions} series={chartSeries} type="donut" width="100%" />
+          <Card sx={{mt: -20}}>
+          <Button onclick={ () => setDetailsModalOpen(true)} >AAAA</Button>
+          </Card>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'center' }}>
             {chartSeries.map((item, index) => {
               const label = labels[index];
@@ -127,12 +135,15 @@ export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element
           </Stack>
         </Stack>
         {data? <DatetimeModal open={open} handleClose={() => setOpen(false)} glucoseReadings={uniqueDatetimes} onConfirm={handleConfirm}></DatetimeModal> : <></>}
+        {data? <FoodDetailsModal open={detailsModalOpen} onClose={() => setDetailsModalOpen(false)} data={filteredData} /> : <></>}
+        <Divider />
       </CardContent>
+
     </Card>
   );
 }
 
-function useChartOptions(labels: string[]): ApexOptions {
+function useChartOptions(labels: string[], setDetailsModalOpen: (value: boolean) => void): ApexOptions {
   const theme = useTheme();
 
   return {
@@ -154,6 +165,29 @@ function useChartOptions(labels: string[]): ApexOptions {
           }
     
         },
-     }
+     },
+    annotations: {
+      position: "front",
+      texts: [
+        {
+          x: "50%",
+          y: "50%",
+          text: "Ver Detalhes",
+          textAnchor: "middle",
+          style: {
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: theme.palette.primary.main,
+            cursor: "pointer",
+            textDecoration: "underline"
+          },
+          click: () => {
+            console.log("Botao clicado")
+            setDetailsModalOpen(true)
+          }// Chama a função ao clicar no texto
+        }
+      ]
+    }
+
   };
 }
