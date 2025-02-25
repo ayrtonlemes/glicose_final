@@ -29,17 +29,11 @@ export function SensorChart({ selectedPatient, selectedSensor,data, datetime, sx
   return (
     <Card sx={sx}>
       <CardHeader
-        action={
-          <Button color="inherit" size="small" startIcon={<ArrowClockwiseIcon fontSize="var(--icon-fontSize-md)" />}>
-            Select Datetime
-          </Button>
-        }
         title="SensorDatetime"
       />
       <CardContent>
         <LineGraph selectedPatient={selectedPatient} selectedSensor={selectedSensor} data={data} dateTime={datetime} /> {/*height={350} options={chartOptions} series={chartSeries} type="bar" width="100%" */}
       </CardContent>
-      <Divider />
     </Card>
   );
 }

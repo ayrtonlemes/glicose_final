@@ -145,6 +145,15 @@ function useChartOptions(labels: string[]): ApexOptions {
     states: { active: { filter: { type: 'none' } }, hover: { filter: { type: 'none' } } },
     stroke: { width: 0 },
     theme: { mode: theme.palette.mode },
-    tooltip: { fillSeriesColor: false },
+    tooltip: { 
+      fillSeriesColor: false, 
+      y: {
+        formatter: (value: number, { seriesIndex }: { seriesIndex: number }) => {
+          const units = ["g", "g", "g", "g"]; // Unidade para cada item (calorias, carbo, proteína, açúcar)
+          return `${value} ${units[seriesIndex]}`;
+          }
+    
+        },
+     }
   };
 }
