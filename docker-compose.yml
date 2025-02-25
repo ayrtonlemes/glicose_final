@@ -1,0 +1,15 @@
+services:
+  frontend:
+    container_name: glicose_web_backup
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - ./frontend:/components
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- -H 0.0.0.0 -p 3000
