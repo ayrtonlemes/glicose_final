@@ -14,17 +14,17 @@ const FoodDetailsModal: React.FC<FoodDetailsModalProps> = ({ open, onClose, data
     <Modal open={open} onClose={onClose}>
       <Paper sx={{ padding: 2, margin: 'auto', maxWidth: 600 }}>
         <Typography variant="h6" component="h2" gutterBottom>
-          Detalhes dos Alimentos
+          Food Tracking
         </Typography>
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell><strong>Alimento</strong></TableCell>
-                <TableCell><strong>Calorias (g)</strong></TableCell>
-                <TableCell><strong>Carboidratos (g)</strong></TableCell>
-                <TableCell><strong>Proteínas (g)</strong></TableCell>
-                <TableCell><strong>Açúcar (g)</strong></TableCell>
+                <TableCell><strong>Food</strong></TableCell>
+                <TableCell><strong>Calories (kcal)</strong></TableCell>
+                <TableCell><strong>Carbohydrate (g)</strong></TableCell>
+                <TableCell><strong>Protein (g)</strong></TableCell>
+                <TableCell><strong>Sugar (g)</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -40,7 +40,7 @@ const FoodDetailsModal: React.FC<FoodDetailsModalProps> = ({ open, onClose, data
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={5} align="center">Nenhum dado disponível</TableCell>
+                  <TableCell colSpan={5} align="center">No data available</TableCell>
                 </TableRow>
               )}
             </TableBody>

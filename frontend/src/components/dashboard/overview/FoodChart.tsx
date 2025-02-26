@@ -16,11 +16,12 @@ import { Phone as PhoneIcon } from '@phosphor-icons/react/dist/ssr/Phone';
 import type { ApexOptions } from 'apexcharts';
 
 import { Chart } from '@/components/core/chart';
-import { Button, Divider } from '@mui/material';
+import { Box, Button, Divider } from '@mui/material';
 import { getPatientFoodData } from '@/services/getPatientFoodData';
 import DatetimeModal from '../DatetimeModal';
 import { BowlFood, Egg, Hamburger, IceCream, Coffee } from '@phosphor-icons/react/dist/ssr';
 import FoodDetailsModal from './FoodDetailsModal';
+import { CaretDoubleRight } from '@phosphor-icons/react';
 
 const iconMapping = { Calories: Hamburger, Protein: Egg, Carbo: BowlFood, Sugar: IceCream } as Record<string, Icon>; //mudar os icones?
 
@@ -112,9 +113,6 @@ export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element
       <CardContent>
         <Stack spacing={2}>
           <Chart height={300} options={chartOptions} series={chartSeries} type="donut" width="100%" />
-          <Card sx={{mt: -20}}>
-          <Button onclick={ () => setDetailsModalOpen(true)} >AAAA</Button>
-          </Card>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'center' }}>
             {chartSeries.map((item, index) => {
               const label = labels[index];
@@ -136,7 +134,17 @@ export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element
         </Stack>
         {data? <DatetimeModal open={open} handleClose={() => setOpen(false)} glucoseReadings={uniqueDatetimes} onConfirm={handleConfirm}></DatetimeModal> : <></>}
         {data? <FoodDetailsModal open={detailsModalOpen} onClose={() => setDetailsModalOpen(false)} data={filteredData} /> : <></>}
-        <Divider />
+        {filteredData? 
+        <>
+        <Divider sx={{mt:2}}/>
+        <Box display='flex' justifyContent={'flex-end'} marginTop={1}>
+
+        <Button color="inherit" size="small"  onClick={() => setDetailsModalOpen(true)} startIcon={<CaretDoubleRight fontSize="var(--icon-fontSize-md)" />}>
+        Details
+        </Button> 
+        </Box>
+        </>
+         : <></>}
       </CardContent>
 
     </Card>
@@ -160,34 +168,11 @@ function useChartOptions(labels: string[], setDetailsModalOpen: (value: boolean)
       fillSeriesColor: false, 
       y: {
         formatter: (value: number, { seriesIndex }: { seriesIndex: number }) => {
-          const units = ["g", "g", "g", "g"]; // Unidade para cada item (calorias, carbo, proteína, açúcar)
+          const units = ["kcal", "g", "g", "g"]; // Unidade para cada item (calorias, carbo, proteína, açúcar)
           return `${value} ${units[seriesIndex]}`;
           }
     
         },
      },
-    annotations: {
-      position: "front",
-      texts: [
-        {
-          x: "50%",
-          y: "50%",
-          text: "Ver Detalhes",
-          textAnchor: "middle",
-          style: {
-            fontSize: "14px",
-            fontWeight: "bold",
-            color: theme.palette.primary.main,
-            cursor: "pointer",
-            textDecoration: "underline"
-          },
-          click: () => {
-            console.log("Botao clicado")
-            setDetailsModalOpen(true)
-          }// Chama a função ao clicar no texto
-        }
-      ]
-    }
-
   };
 }
