@@ -19,11 +19,11 @@ import { Chart } from '@/components/core/chart';
 import { Box, Button, Divider } from '@mui/material';
 import { getPatientFoodData } from '@/services/getPatientFoodData';
 import DatetimeModal from '../DatetimeModal';
-import { BowlFood, Egg, Hamburger, IceCream, Coffee } from '@phosphor-icons/react/dist/ssr';
+import { BowlFood, Cow,  Egg, Hamburger, IceCream, Coffee } from '@phosphor-icons/react/dist/ssr';
 import FoodDetailsModal from './FoodDetailsModal';
 import { CaretDoubleRight } from '@phosphor-icons/react';
 
-const iconMapping = { Calories: Hamburger, Protein: Egg, Carbo: BowlFood, Sugar: IceCream } as Record<string, Icon>; //mudar os icones?
+const iconMapping = { Calories: Hamburger, Protein: Cow, Carbo: BowlFood, Sugar: IceCream } as Record<string, Icon>; //mudar os icones?
 
 export interface TrafficProps {
   data: any[];
@@ -38,6 +38,7 @@ export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element
   const [uniqueDatetimes, setUniqueDatetimes] = React.useState<string[]>([]);
   const [detailsModalOpen, setDetailsModalOpen] = React.useState<boolean>(false);
   
+  const units = ["kcal", "g", "g", "g"];
   const chartOptions = useChartOptions(labels, setDetailsModalOpen);
 
   const getUniqueDatetimes = (data: any[]): string[] => {
@@ -127,6 +128,9 @@ export function FoodChart({ data, labels, sx }: TrafficProps): React.JSX.Element
                   <Typography color="text.secondary" variant="subtitle2">
                     {percentage}%
                   </Typography>
+                  <Typography color="text.secondary" variant="subtitle2">
+                    {chartSeries[index] + units[index]}
+                  </Typography>
                 </Stack>
               );
             })}
@@ -156,23 +160,28 @@ function useChartOptions(labels: string[], setDetailsModalOpen: (value: boolean)
 
   return {
     chart: { background: 'transparent' },
-    colors: [theme.palette.primary.main, theme.palette.success.main, theme.palette.info.main,theme.palette.warning.main],
+    colors: [theme.palette.primary.main, theme.palette.success.main, theme.palette.info.main, theme.palette.warning.main],
     dataLabels: { enabled: false },
     labels,
-    legend: { show: false },
+    legend: {
+      show: true, // Mostra a legenda
+      position: 'bottom', // Posiciona a legenda na parte inferior
+      markers: {
+        fillColors: [theme.palette.primary.main, theme.palette.success.main, theme.palette.info.main, theme.palette.warning.main], // Cores dos marcadores
+      },
+    },
     plotOptions: { pie: { expandOnClick: false } },
     states: { active: { filter: { type: 'none' } }, hover: { filter: { type: 'none' } } },
     stroke: { width: 0 },
     theme: { mode: theme.palette.mode },
-    tooltip: { 
-      fillSeriesColor: false, 
+    tooltip: {
+      fillSeriesColor: false,
       y: {
         formatter: (value: number, { seriesIndex }: { seriesIndex: number }) => {
           const units = ["kcal", "g", "g", "g"]; // Unidade para cada item (calorias, carbo, proteína, açúcar)
           return `${value} ${units[seriesIndex]}`;
-          }
-    
         },
-     },
+      },
+    },
   };
 }
