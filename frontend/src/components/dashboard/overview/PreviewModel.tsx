@@ -131,10 +131,10 @@ const ProgressBar: React.FC<{ value: number }> = ({ value }) => {
 
       <Stack spacing={1} sx={{ mt: 2, alignItems: "center" }}>
             {[
-              { label: "Hypoglycemia (menor que 70 mg/dL)", color: "#3385FF" },
-              { label: "Normal (entre 70 mg/dL e  99 mg/dL)", color: "#33FF57" },
-              { label: "Prediabetes (entre 99 mg/dL e 126 mg/dL)", color: "#FF8C00" },
-              { label: "Diabetes (maior que 126 mg/dL)", color: "#FF5733" },
+              { label: "Hypoglycemia (less than 70 mg/dL)", color: "#3385FF" },
+              { label: "Normal (between 70 mg/dL and 99 mg/dL)", color: "#33FF57" },
+              { label: "Prediabetes (between 99 mg/dL and 126 mg/dL)", color: "#FF8C00" },
+              { label: "Diabetes (more than 126 mg/dL)", color: "#FF5733" },
             ].map((item, index) => (
               <Stack key={index} direction="row" spacing={1} alignItems="center">
                 <Box sx={{ width: 16, height: 16, backgroundColor: item.color, borderRadius: "4px" }} />
@@ -176,16 +176,16 @@ const SidebarApp = ({glicoResult, open, setOpen}: SidebarAppProps) => {
             <CloseIcon />
           </IconButton>
           <Tooltip title="Faixas de glicose no sangue baseadas em recomendações médicas">
-          <Typography variant="h5" fontWeight="bold">Classificação dos Níveis</Typography>
+          <Typography variant="h5" fontWeight="bold">Prediction</Typography>
           </Tooltip>
           <ProgressBar value={glicoResult} />
           <Typography mt={2}>
-          O valor da glicose informado foi analisado e classificado dentro dos padrões conhecidos. 
-          Isso pode ajudar a entender melhor os níveis de glicose no sangue.
+          The reported glucose value has been analyzed and classified based on known standards. 
+          This can be useful to understand your blood glucose levels.
           </Typography>
           <Typography color="error" fontWeight="bold" mt={1}>
-          ⚠️ Atenção: Este resultado NÃO é um diagnóstico médico. 
-          Caso tenha dúvidas ou sintomas, procure um profissional de saúde.
+          ⚠️ Warning: This result is NOT a medical diagnosis. 
+          If you have any questions or symptoms, you must seek a healthcare professional.
           </Typography>
           <Divider sx={{mt:2 , mb:5}}></Divider>
 
@@ -194,10 +194,12 @@ const SidebarApp = ({glicoResult, open, setOpen}: SidebarAppProps) => {
             src={path} 
             alt="logo" 
             sx={{ 
-              maxWidth: "30%", // Garante que não ultrapasse o contêiner
+              maxWidth: "40%", // Garante que não ultrapasse o contêiner
               height: "auto", // Mantém a proporção
               objectFit: "contain", // Evita distorção
-              mx: "auto", // Centraliza horizontalmente
+              justifyContent: "center", 
+              alignContent: "center",
+              mx: "center", // Centraliza horizontalmente
             }} 
           />
 
