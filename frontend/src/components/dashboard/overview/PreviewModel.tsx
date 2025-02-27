@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, Stack, TextField, Button, Drawer, IconButton } from "@mui/material";
+import { Box, Typography, Stack, TextField, Button, Drawer, IconButton, Divider, Tooltip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 // Definição dos intervalos de cores
@@ -18,12 +18,13 @@ const mapValueToPercentage = (value: number): number => {
   return 100;
 };
 
+const path = '/assets/SuperMarca.png'
 const ProgressBar: React.FC<{ value: number }> = ({ value }) => {
   const markers = [70, 99, 126];
   return (
     <Box sx={{ width: "100%", textAlign: "center", padding: 2 }}>
       <Typography variant="body1" fontWeight="bold" sx={{ fontSize: "26px" }}>
-        Value Glucose: {value}
+        Value Glucose: {value} mg/dL
       </Typography>
       <Box sx={{ position: "relative", width: "100%", height: 24, borderRadius: 8, backgroundColor: "#ddd", overflow: "hidden" }}>
         {intervals.map((interval, index) => {
@@ -130,10 +131,10 @@ const ProgressBar: React.FC<{ value: number }> = ({ value }) => {
 
       <Stack spacing={1} sx={{ mt: 2, alignItems: "center" }}>
             {[
-              { label: "Hypoglycemia", color: "#3385FF" },
-              { label: "Normal", color: "#33FF57" },
-              { label: "Prediabetes", color: "#FF8C00" },
-              { label: "Diabetes", color: "#FF5733" },
+              { label: "Hypoglycemia (menor que 70 mg/dL)", color: "#3385FF" },
+              { label: "Normal (entre 70 mg/dL e  99 mg/dL)", color: "#33FF57" },
+              { label: "Prediabetes (entre 99 mg/dL e 126 mg/dL)", color: "#FF8C00" },
+              { label: "Diabetes (maior que 126 mg/dL)", color: "#FF5733" },
             ].map((item, index) => (
               <Stack key={index} direction="row" spacing={1} alignItems="center">
                 <Box sx={{ width: 16, height: 16, backgroundColor: item.color, borderRadius: "4px" }} />
@@ -174,10 +175,32 @@ const SidebarApp = ({glicoResult, open, setOpen}: SidebarAppProps) => {
           >
             <CloseIcon />
           </IconButton>
-          <Typography variant="h5" gutterBottom>
-            Resultado do modelo
-          </Typography>
+          <Tooltip title="Faixas de glicose no sangue baseadas em recomendações médicas">
+          <Typography variant="h5" fontWeight="bold">Classificação dos Níveis</Typography>
+          </Tooltip>
           <ProgressBar value={glicoResult} />
+          <Typography mt={2}>
+          O valor da glicose informado foi analisado e classificado dentro dos padrões conhecidos. 
+          Isso pode ajudar a entender melhor os níveis de glicose no sangue.
+          </Typography>
+          <Typography color="error" fontWeight="bold" mt={1}>
+          ⚠️ Atenção: Este resultado NÃO é um diagnóstico médico. 
+          Caso tenha dúvidas ou sintomas, procure um profissional de saúde.
+          </Typography>
+          <Divider sx={{mt:2 , mb:5}}></Divider>
+
+          <Box 
+            component="img" 
+            src={path} 
+            alt="logo" 
+            sx={{ 
+              maxWidth: "30%", // Garante que não ultrapasse o contêiner
+              height: "auto", // Mantém a proporção
+              objectFit: "contain", // Evita distorção
+              mx: "auto", // Centraliza horizontalmente
+            }} 
+          />
+
         </Box>
       </Drawer>
     </div>
