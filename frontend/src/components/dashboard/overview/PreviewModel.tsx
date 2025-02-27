@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Box, Typography, Stack, TextField, Button, Drawer, IconButton, Divider, Tooltip } from "@mui/material";
+import { Box, Typography, Stack, TextField, Button, Drawer, IconButton, Divider, Tooltip, Card } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-
+import animationGlico from '@/components/animations/animation_glico_predict.json'
+import Lottie from "react-lottie";
 // Definição dos intervalos de cores
 const intervals = [
   { max: 70, color: "#3385FF" }, // Azul
@@ -153,6 +154,15 @@ interface SidebarAppProps {
 const SidebarApp = ({glicoResult, open, setOpen}: SidebarAppProps) => {
   const [progress, setProgress] = useState(0);
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationGlico,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
   const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(event.target.value, 10);
     if (!isNaN(newValue)) {
@@ -190,19 +200,28 @@ const SidebarApp = ({glicoResult, open, setOpen}: SidebarAppProps) => {
             <CloseIcon />
           </IconButton>
           
-          <Tooltip title="Faixas de glicose no sangue baseadas em recomendações médicas">
-          <Typography variant="h5" fontWeight="bold">Prediction</Typography>
-          </Tooltip>
-          <ProgressBar value={glicoResult} />
-          <Typography mt={2}>
-          The reported glucose value has been analyzed and classified based on known standards. 
-          This can be useful to understand your blood glucose levels.
-          </Typography>
-          <Typography color="error" fontWeight="bold" mt={1}>
-          ⚠️ Warning: This result is NOT a medical diagnosis. 
-          If you have any questions or symptoms, you must seek a healthcare professional.
-          </Typography>
+          <Lottie options={defaultOptions} height={300} width={300} />
 
+          <Tooltip title="Faixas de glicose no sangue baseadas em recomendações médicas">
+          <Card sx={{p:6}}>
+          <Typography variant="h5" fontWeight="bold">Prediction</Typography>
+          <ProgressBar value={glicoResult} />
+          
+          </Card> 
+          </Tooltip>
+          <Card sx={{ mt:3, mb:3, p:3}}>
+            <Typography mt={2}>
+            The reported glucose value has been analyzed and classified based on known standards. 
+            This can be useful to understand your blood glucose levels.
+            </Typography>
+
+          </Card>
+          <Card sx={{p:3}}>
+            <Typography color="error" fontWeight="bold" mt={1}>
+            ⚠️ Warning: This result is NOT a medical diagnosis. 
+            If you have any questions or symptoms, you must seek a healthcare professional.
+            </Typography>
+          </Card>
 
         </Box>
       </Drawer>
