@@ -22,6 +22,8 @@ export function MainNav(): React.JSX.Element {
 
   const userPopover = usePopover<HTMLDivElement>();
 
+  const path = '/assets/logo-super-horizontal.png'
+
   return (
     <React.Fragment>
       <Box
@@ -52,8 +54,46 @@ export function MainNav(): React.JSX.Element {
               <IconButton>
                 <MagnifyingGlassIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip>  
           </Stack>
+          <Box sx={{
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'center',
+              gap:2,
+            }}>
+            <Tooltip title="SuperIcon">
+              <IconButton>
+                <Box 
+                  component="img"
+                  src='/assets/logo-super-horizontal.png'
+                  alt='superIcon'
+                  sx={{
+                    width:200,
+                    height:50,
+                    objectFit:"contain",
+
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="UFAM-logo">
+              <IconButton>
+              <Box 
+                  component="img"
+                  src='/assets/logo-UFAM.jpg'
+                  alt='UFAM-LOGO'
+                  sx={{
+                    width:50,
+                    height:50,
+                    objectFit:"contain"
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
+            </Box>
+          
           <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
             <Tooltip title="Contacts">
               <IconButton>

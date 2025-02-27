@@ -22,7 +22,7 @@ const path = '/assets/SuperMarca.png'
 const ProgressBar: React.FC<{ value: number }> = ({ value }) => {
   const markers = [70, 99, 126];
   return (
-    <Box sx={{ width: "100%", textAlign: "center", padding: 2 }}>
+    <Box sx={{ width: "100%", textAlign: "center", padding: 2,}}>
       <Typography variant="body1" fontWeight="bold" sx={{ fontSize: "26px" }}>
         Value Glucose: {value} mg/dL
       </Typography>
@@ -167,14 +167,29 @@ const SidebarApp = ({glicoResult, open, setOpen}: SidebarAppProps) => {
           Abrir Sidebar
         </Button>
       </Box>
+      <Divider />
       <Drawer anchor="right" open={open} onClose={() => setOpen(false)} sx={{ width: "50%" }}>
-        <Box sx={{ width: "50vw", padding: 3, textAlign: "center", position: "relative" }}>
+        <Box sx={{ 
+          width: "50vw",
+          height: "100vh",
+          padding: 3,
+          display: "flex",
+          flexDirection:"column",
+          justifyContent: "center",
+          alignItens: "center",
+          textAlign: "center",
+          position: "relative",
+          
+          
+          }}>
+
           <IconButton
             onClick={() => setOpen(false)}
             sx={{ position: "absolute", top: 10, right: 10 }}
           >
             <CloseIcon />
           </IconButton>
+          
           <Tooltip title="Faixas de glicose no sangue baseadas em recomendações médicas">
           <Typography variant="h5" fontWeight="bold">Prediction</Typography>
           </Tooltip>
@@ -187,24 +202,11 @@ const SidebarApp = ({glicoResult, open, setOpen}: SidebarAppProps) => {
           ⚠️ Warning: This result is NOT a medical diagnosis. 
           If you have any questions or symptoms, you must seek a healthcare professional.
           </Typography>
-          <Divider sx={{mt:2 , mb:5}}></Divider>
 
-          <Box 
-            component="img" 
-            src={path} 
-            alt="logo" 
-            sx={{ 
-              maxWidth: "40%", // Garante que não ultrapasse o contêiner
-              height: "auto", // Mantém a proporção
-              objectFit: "contain", // Evita distorção
-              justifyContent: "center", 
-              alignContent: "center",
-              mx: "center", // Centraliza horizontalmente
-            }} 
-          />
 
         </Box>
       </Drawer>
+      
     </div>
   );
 };
